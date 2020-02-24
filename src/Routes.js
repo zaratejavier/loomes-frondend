@@ -6,6 +6,7 @@ import Login from "./containers/Login";
 import AppliedRoute from "./components/AppliedRoute";
 import ResetPassword from "./containers/ResetPassword";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
+import NewNote from "./containers/NewNote";
 import Signup from "./containers/Signup";
 
 
@@ -15,6 +16,7 @@ export default function Routes({ appProps }) {
         <AppliedRoute path="/" exact component={Home} appProps={appProps} />
         <AppliedRoute path="/login" exact component={Login} appProps={appProps} />
         <AppliedRoute path="/signup" exact component={Signup} appProps={appProps} />
+        <AppliedRoute path="/notes/new" exact component={NewNote} appProps={appProps} />
         
         <UnauthenticatedRoute
             path="/login/reset"
