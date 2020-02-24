@@ -60,7 +60,7 @@ function App(props) {
               ? <NavItem onClick={handleLogout}>Logout</NavItem>
               : <>
                   <LinkContainer to="/signup">
-                    <NavItem>Signup</NavItem>
+                    <NavItem>Create User</NavItem>
                   </LinkContainer>
                   <LinkContainer to="/login">
                     <NavItem>Login</NavItem>

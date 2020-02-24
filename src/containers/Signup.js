@@ -11,10 +11,13 @@ import "./Signup.css";
 
 export default function Signup(props) {
   const [fields, handleFieldChange] = useFormFields({
+    username: "",
+    first_name: "",
+    last_name: "",
+    phone_number: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    confirmationCode: ""
+    confirmPassword: ""
   });
   const [newUser, setNewUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,19 +36,43 @@ export default function Signup(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-  
+
     setIsLoading(true);
-  
+
     try {
       // const newUser = await Auth.signUp({
       //   username: fields.email,
       //   password: fields.password
       // });
-      const newUser = {};
+      // const newUser = {};
+
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify({ 
+        "username": fields.username,
+        "first_name": fields.first_name,
+        "last_name": fields.last_name,
+        "phone_number": fields.phone_number,
+        "email": fields.email,
+        "password": fields.password,
+      });
+
+      const requestOptions = {
+        method: 'POST',
+        headers: headers,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      const base_url = "https://floating-reaches-62304.herokuapp.com/"
+      const response = await fetch(`${base_url}/api/users`, requestOptions)
+
       setIsLoading(false);
       // setNewUser(newUser);
-      props.history.push("/");
-      alert('User has been successfully created!');
+      console.log(response);
+      // props.history.push("/");
+      // alert('User has been successfully created!');
     } catch (e) {
       alert(e.message);
       setIsLoading(false);
@@ -54,15 +81,13 @@ export default function Signup(props) {
 
   async function handleConfirmationSubmit(event) {
     event.preventDefault();
-  
+
     setIsLoading(true);
-  
+
     try {
-      // await Auth.confirmSignUp(fields.email, fields.confirmationCode);
-      // await Auth.signIn(fields.email, fields.password);
-      // props.userHasAuthenticated(true);
-      props.history.push("/");
-      alert('User has been successfully created!');
+      // props.history.push("/");
+      // console.log(raw);
+      // alert('User has been successfully created!');
     } catch (e) {
       alert(e.message);
       setIsLoading(false);
@@ -95,30 +120,65 @@ export default function Signup(props) {
     );
   }
 
+
+
+
   function renderForm() {
     return (
       <form onSubmit={handleSubmit}>
+        <FormGroup controlId="username" bsSize="large">
+          <ControlLabel>Username</ControlLabel>
+          <FormControl
+            autoFocus
+            type="username"
+            value={fields.username}
+            onChange={handleFieldChange}
+          />
+        </FormGroup>
+        <FormGroup controlId="first_name" bsSize="large">
+          <ControlLabel>First Name</ControlLabel>
+          <FormControl
+            type="first_name"
+            value={fields.first_name}
+            onChange={handleFieldChange}
+          />
+        </FormGroup>
+        <FormGroup controlId="last_name" bsSize="large">
+          <ControlLabel>Last Name</ControlLabel>
+          <FormControl
+            type="last_name"
+            onChange={handleFieldChange}
+            value={fields.last_name}
+          />
+        </FormGroup>
+        <FormGroup controlId="phone_number" bsSize="large">
+          <ControlLabel>Phone Number</ControlLabel>
+          <FormControl
+            type="phone_number"
+            onChange={handleFieldChange}
+            value={fields.phone_number}
+          />
+        </FormGroup>
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl
-            autoFocus
             type="email"
-            value={fields.email}
             onChange={handleFieldChange}
+            value={fields.email}
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
           <ControlLabel>Password</ControlLabel>
           <FormControl
             type="password"
-            value={fields.password}
             onChange={handleFieldChange}
+            value={fields.password}
           />
         </FormGroup>
         <FormGroup controlId="confirmPassword" bsSize="large">
           <ControlLabel>Confirm Password</ControlLabel>
           <FormControl
-            type="password"
+            type="confirmPassword"
             onChange={handleFieldChange}
             value={fields.confirmPassword}
           />
@@ -130,7 +190,7 @@ export default function Signup(props) {
           isLoading={isLoading}
           disabled={!validateForm()}
         >
-          Signup
+          Create User
         </LoaderButton>
       </form>
     );

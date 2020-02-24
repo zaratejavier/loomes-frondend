@@ -34,10 +34,12 @@ export default function Login(props) {
     try {
       // const apiurl = "http://127.0.0.1:5000"
       const apiurl = "https://floating-reaches-62304.herokuapp.com/"
-      const response = fetch(`${apiurl}/api/tokens`, requestOptions)
+      fetch(`${apiurl}/api/tokens`, requestOptions).then(login_response => {
+        login_response.json().then(response => {
+          jwt = response.token
+        });
+      });
       
-      jwt = response.data.jwt;
-      alert(jwt);
       props.userHasAuthenticated(true);
       props.history.push("/");
     } catch (e) {
