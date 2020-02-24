@@ -4,7 +4,7 @@ import LoaderButton from "../components/LoaderButton";
 import { useFormFields } from "../libs/hooksLib";
 import "./Login.css";
 import { Link } from "react-router-dom";
-
+import base64 from "base-64";
 
 export default function Login(props) {
   let jwt = "";
@@ -24,39 +24,18 @@ export default function Login(props) {
 
     setIsLoading(true);
 
+    const headers = new Headers()
+    headers.set('Authorization', 'Basic ' + base64.encode(fields.email + ":" + fields.password));
     const requestOptions ={
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        username: fields.email,
-        password: fields.password
-      })
+      headers: headers
     };
 
-    // fetch(`${config.apiurl}/users/authenticate`, requestOptions)
-    //   .then(handleResponse)
-    //   .then(user => {
-    //     //login successful if there's a user in the response
-    //     if(user){
-    //       //store user details and basic auth credentials in local storage
-    //       // to keep user logged in between page refreshes
-    //       user..authdata = window.btoa(username + ':' + password);
-    //       localStorage.setItem('user', JSON.stringify(user));
-    //     }
-
-    //     return user;
-    //   })
-
     try {
+      // const apiurl = "http://127.0.0.1:5000"
       const apiurl = "https://floating-reaches-62304.herokuapp.com/"
       const response = fetch(`${apiurl}/api/tokens`, requestOptions)
-
-      // const response = await axios.post(url,{crossdomain: true},{
-      //   auth:{
-      //    username: fields.email,
-      //    password: fields.password
-      //   }
-      // });
+      
       jwt = response.data.jwt;
       alert(jwt);
       props.userHasAuthenticated(true);
