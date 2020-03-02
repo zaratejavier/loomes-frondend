@@ -28,6 +28,7 @@ export default function Home(props) {
   }, [props.isAuthenticated]);
   
   function loadNotes() {
+    // return API.get("notes", "/notes");
     let sampleNotes = [
       {content: "First Note", noteId: 0, createdAt: "2020/03/01"},
       {content: "Second Note", noteId: 1, createdAt: "2020/03/01"},
