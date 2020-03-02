@@ -94,6 +94,8 @@ export default function Signup(props) {
     }
   }
 
+
+
   function renderConfirmationForm() {
     return (
       <form onSubmit={handleConfirmationSubmit}>

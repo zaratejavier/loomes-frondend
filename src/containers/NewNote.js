@@ -2,12 +2,15 @@ import React, { useRef, useState } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
+// import { API } from "aws-amplify";
+import { s3Upload } from "../libs/awsLib";
 import "./NewNote.css";
 
 export default function NewNote(props) {
   const file = useRef(null);
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
 
   function validateForm() {
     return content.length > 0;
@@ -19,7 +22,7 @@ export default function NewNote(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
+  
     if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
       alert(
         `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
@@ -27,9 +30,27 @@ export default function NewNote(props) {
       );
       return;
     }
-
+  
     setIsLoading(true);
+  
+    // try {
+    //   const attachment = file.current
+    //     ? await s3Upload(file.current)
+    //     : null;
+  
+    //   await createNote({ content, attachment });
+    //   props.history.push("/");
+    // } catch (e) {
+    //   alert(e);
+    //   setIsLoading(false);
+    // }
   }
+  
+  // function createNote(note) {
+  //   return API.post("notes", "/notes", {
+  //     body: note
+  //   });
+  // }
 
   return (
     <div className="NewNote">
